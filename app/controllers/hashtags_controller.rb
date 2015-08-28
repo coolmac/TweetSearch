@@ -61,6 +61,65 @@ class HashtagsController < ApplicationController
     end
   end
 
+
+
+
+
+
+def search_tweets
+
+  @hashtag=Hashtag.find_or_create_by(name: params[:name])
+  @search_tag= params[:name]
+
+
+
+twitter = Twitter::REST::Client.new do |config|
+  config.consumer_key = "dguOPv8JV05Xy4M2C3uCR4ClA"
+  config.consumer_secret ="XWz4KXO5efgXziSFJHIotKEpVfGvuA5d01sns7HZEN1kT9jzmC"
+  config.access_token = "3361041133-tjRNIQL8GPO34ErOhPNKJZoYr0RnnOCfm2zPgh3"
+  config.access_token_secret = "ykozMzF4nO6E2euTXpoKGgVcweB9l9yRX0iWgxtzrkR9m"
+end
+
+
+
+# Twitter.search("#ruby -rt", :lang => "ja", :count => 1).results.size
+
+
+@result=  twitter.search("#"+ @search_tag, :count => 3) 
+
+ if @result && @result.count>0
+   @hashtag.save
+     @result. each do  |tweet|
+       tweetidd = tweet.id
+       @tweet= Tweet.find_or_create_by(tweetid: tweetidd)
+       @tweet.text = tweet.text
+       @hashtag.tweets<< @tweet
+       @hashtag.save
+       @tweet.save
+     end
+end
+end
+
+
+def searchform
+  @hashtag=  Hashtag.new
+ end
+
+
+def tweetlist
+  @hashtag= Hashtag.find_by_name(params[:name])
+  @tweets= @hashtag.tweets
+ end
+
+
+
+
+
+
+
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_hashtag

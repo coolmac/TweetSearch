@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  resources :hashtags
+  resources :hashtags, param: :name , only: [:index]
+       
 
+
+get  'hashtags/:name' => 'hashtags#tweetlist'
+post  'hashtags/search_tweets' => 'hashtags#search_tweets'
+
+  root 'hashtags#searchform'
+ 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

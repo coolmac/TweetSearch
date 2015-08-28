@@ -1,0 +1,9 @@
+ 
+<div class="ceter headig"><center><h2> Fetch Tweets </h2></center></div>
+<div class="center">
+   <%= form_tag  :action => 'search_tweets' do %>
+      <%= text_field_tag 'name', nil, placeholder: 'Enter HashTag to Search Tweets..'  %>
+     
+      <%= submit_tag 'Submit' %>   
+  <% end %>
+</div>
